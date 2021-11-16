@@ -3,7 +3,7 @@ const path = require('path');
 const router = require('express').Router();
 const fs = require('fs');
 const util = require('util');
-const uuid = require('uuid');
+const uuid = require('./helpers/uuid');
 
 
 const PORT = 3001;
@@ -19,9 +19,9 @@ app.use(express.static('public'));
 app.get('/notes', (req, res) => {
     console.log('notes');
     res.sendFile(path.join(__dirname, '/public/index.html'));
-}
+});
 
-app.use('/api', feedbackRoute);
+// app.use('/api', feedbackRoute);
 
 app.listen(PORT, () =>
     console.log(`App listening at http://localhost:${PORT} 🚀`)
