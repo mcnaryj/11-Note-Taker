@@ -32,3 +32,14 @@ app.listen(PORT, () =>
 );
 
 module.exports = router;
+
+// writeToFile
+
+// readAndAppend
+fs.readFile(file, 'utf8', (err, data) => {
+    if (err) {
+        console.error(err);
+    }
+
+}
+)
