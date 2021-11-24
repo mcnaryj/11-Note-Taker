@@ -74,23 +74,21 @@ app.post('/api/notes', (req, res) => {
 });
 
 
-// DELETE /api/notes/:id
+// DELETE / api / notes /: id
 app.delete('/api/notes/:id'), (req, res) => {
     // we want the userid
     const userId = req.params.id;
+    console.log(req.params.id)
+
     // then we want to read from the db json file, promise the return of the data, then parse that data in the fxn
-    readFromFile('./db/db.json'), then((data) => JSON.parse(data))
+    readFromFile('./db/db.json').then((data) => JSON.parse(data))
         // then with our notes variable, we want to filter it, and check to see that the note does not match the id
         .then((notes) => notes.filter((note) => note.id !== userId))
         // writing the filtered note to the db.json
         .then((filteredNotes) => writeToFile('./db/db.json', filteredNotes))
         .then(() => res.json({ ok: true }))
-        .catch((err) => res.status(500).json(err))
-    // a catch error function to return a 500 error if we enter the wrong id
 
+        // a catch error function to return a 500 error if we enter the wrong id
+        .catch((err) => res.status(500).json(err))
 
 }
-app.listen(PORT, () =>
-    console.log(`App listening at http://localhost:${PORT} 🚀`)
-);
-
