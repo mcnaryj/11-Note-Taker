@@ -56,12 +56,31 @@ const readAndAppend = (content, file) => {
     });
 };
 
+
+app.post('/api/notes', (req, res) => {
+    // log the request method
+    console.info(`${req.method} request received`);
+    // declare a constant
+    const addNote = { title, text } = req.body;
+    // if req.body contains addNote with the title, text and a unique id
+    if (req.body) {
+        const addNote = {
+            title,
+            text,
+            id: uuid(),
+        }
+        // then we read and append the new note from the db.json file
+        // and the response is res.json(newNote)
+        readAndAppend(addNote, './db/db.json');
+        res.json(addNote);
+    }
+});
+
 app.get('/api/notes', (req, res) =>
     readFromFile('.db/db.json').then((data) => res.json(JSON.parse(data)))
 );
-app.post('/api/notes', (req, res) =>
-    readFromFile('.db/db.json').then((data) => res.json(JSON.parse(data)))
-);
+// DELETE /api/notes/:id
+
 // heroku hosts our application on the cloud
 
 // GIVEN a note-taking application
