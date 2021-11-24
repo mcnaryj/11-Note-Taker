@@ -82,7 +82,10 @@ app.delete('/api/notes/:id'), (req, res) => {
     readFromFile('./db/db.json'), then((data) => JSON.parse(data))
         // then with our notes variable, we want to filter it, and check to see that the note does not match the id
         .then((notes) => notes.filter((note) => note.id !== userId))
-    // we want a promise that says ok: true
+        // writing the filtered note to the db.json
+        .then((filteredNotes) => writeToFile('./db/db.json', filteredNotes))
+        .then(() => res.json({ ok: true }))
+        .catch((err) => res.status(500).json(err))
     // a catch error function to return a 500 error if we enter the wrong id
 
 
