@@ -77,8 +77,11 @@ app.post('/api/notes', (req, res) => {
 // DELETE /api/notes/:id
 app.delete('/api/notes/:id'), (req, res) => {
     // we want the userid
-    // then we want to read from the db jason file, promise the return of the data, then parse that data in the fxn
-    // then with our notes variable, we want to filter it, and check to see that the note does not match the id
+    const userId = req.params.id;
+    // then we want to read from the db json file, promise the return of the data, then parse that data in the fxn
+    readFromFile('./db/db.json'), then((data) => JSON.parse(data))
+        // then with our notes variable, we want to filter it, and check to see that the note does not match the id
+        .then((notes) => notes.filter((note) => note.id !== userId))
     // we want a promise that says ok: true
     // a catch error function to return a 500 error if we enter the wrong id
 
