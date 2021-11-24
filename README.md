@@ -3,7 +3,7 @@
 
 ## Description
 
-The purpose of this project was to create a note taker that helps the user create and delete notes so they can stay on top of thigns. The app uses express to capture the data input by the user and updates an html page with each note.
+The purpose of this project was to create a note taker that helps the user create and delete notes so they can stay on top of things. The app uses express to capture the data input by the user and updates an html page with each note.
 
 
 ## License
