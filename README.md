@@ -62,8 +62,9 @@ This application is intended for users who want to have a place where they can k
 The deployed app can be found at the following url: https://peaceful-reef-89877.herokuapp.com/.
 The following gif shows the functionality of the app:
 ![Note_taker_demo](https://user-images.githubusercontent.com/88205127/143307762-8e2af1e6-5254-47ca-8efe-fd968a07fc0f.gif)
-The user is able to enter a note, and upon clicking the save button in the top-right corner, the page is updated to show the note on the left panel.
-When the trashcan icon is clicked, the note is deleted.
+The user is able to enter a note with a title and body text.
+Upon clicking the save button in the top-right corner, the page is updated to show the note on the left panel.
+When the trash can icon is clicked, the note is deleted.
 
 ## Notes
 
