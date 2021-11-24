@@ -67,7 +67,7 @@ app.post('/api/notes', (req, res) => {
             id: uniqid(),
         };
         // then we read and append the new note from the db.json file
-        // and the response is res.json(addNote)
+        // and the response is res.json(newNote)
         readAndAppend(newNote, './db/db.json');
         res.json(newNote);
     }
