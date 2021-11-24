@@ -5,7 +5,7 @@ const fs = require('fs');
 const util = require('util');
 
 // importing uuid and db.json
-const uuid = require('./helpers/uuid');
+const uniqid = require('uniqid');
 const db = require('./db/db.json');
 
 // setting the environment variable
@@ -25,23 +25,22 @@ app.get('/notes', (req, res) => {
 });
 
 // GET Route for homepage
-app.get('*', (req, res) => {
-    console.log("get *");
-    res.sendFile(path.join(__dirname, '/public/index.html'));
+router.get('*', (req, res) => {
+    console.log("* route");
+    res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
-app.listen(PORT, () =>
-    console.log(`App listening at http://localhost:${PORT} 🚀`)
-);
 
 
-const readFromFile = util.promisify(fs.readFile);
 
 
 const writeToFile = (destination, content) =>
     fs.writeFile(destination, JSON.stringify(content, null, 4), (err) =>
         err ? console.error(err) : console.info(`Written to ${destination}`)
     );
+
+const readFromFile = util.promisify(fs.readFile);
+
 
 
 const readAndAppend = (content, file) => {
@@ -56,10 +55,9 @@ const readAndAppend = (content, file) => {
     });
 };
 
-app.get('/api/notes', (req, res) => {
-    console.log(res);
+app.get('/api/notes', (req, res) =>
+
     readFromFile('.db/db.json').then((data) => res.json(JSON.parse(data)))
-}
 );
 
 app.post('/api/notes', (req, res) => {
@@ -72,7 +70,7 @@ app.post('/api/notes', (req, res) => {
         const newNote = {
             title,
             text,
-            id: uuid(),
+            id: uniqid(),
         }
         // then we read and append the new note from the db.json file
         // and the response is res.json(addNote)
@@ -101,3 +99,8 @@ module.exports = router;
 // THEN that note appears in the right-hand column
 // WHEN I click on the Write icon in the navigation at the top of the page
 // THEN I am presented with empty fields to enter a new note title and the note’s text in the right-hand column
+
+
+app.listen(PORT, () =>
+    console.log(`App listening at http://localhost:${PORT} 🚀`)
+);
