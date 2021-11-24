@@ -4,6 +4,7 @@ const router = require('express').Router();
 const fs = require('fs');
 const util = require('util');
 
+// importing uuid and db.json
 const uuid = require('./helpers/uuid');
 const db = require('./db/db.json');
 
@@ -33,11 +34,10 @@ app.listen(PORT, () =>
     console.log(`App listening at http://localhost:${PORT} 🚀`)
 );
 
-module.exports = router;
 
 const readFromFile = util.promisify(fs.readFile);
 
-// 
+
 const writeToFile = (destination, content) =>
     fs.writeFile(destination, JSON.stringify(content, null, 4), (err) =>
         err ? console.error(err) : console.info(`Written to ${destination}`)
@@ -56,29 +56,34 @@ const readAndAppend = (content, file) => {
     });
 };
 
+app.get('/api/notes', (req, res) => {
+    console.log(res);
+    readFromFile('.db/db.json').then((data) => res.json(JSON.parse(data)))
+}
+);
 
 app.post('/api/notes', (req, res) => {
     // log the request method
     console.info(`${req.method} request received`);
     // declare a constant
-    const addNote = { title, text } = req.body;
+    const newNote = { title, text } = req.body;
     // if req.body contains addNote with the title, text and a unique id
     if (req.body) {
-        const addNote = {
+        const newNote = {
             title,
             text,
             id: uuid(),
         }
         // then we read and append the new note from the db.json file
-        // and the response is res.json(newNote)
-        readAndAppend(addNote, './db/db.json');
-        res.json(addNote);
+        // and the response is res.json(addNote)
+        readAndAppend(newNote, './db/db.json');
+        res.json(newNote);
     }
 });
 
-app.get('/api/notes', (req, res) =>
-    readFromFile('.db/db.json').then((data) => res.json(JSON.parse(data)))
-);
+module.exports = router;
+
+
 // DELETE /api/notes/:id
 
 // heroku hosts our application on the cloud
