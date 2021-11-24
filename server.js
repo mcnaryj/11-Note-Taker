@@ -88,7 +88,7 @@ app.delete('/api/notes/:id', (req, res) => {
         .then((filteredNotes) => writeToFile('./db/db.json', filteredNotes))
         .then(() => res.json({ ok: true }))
 
-        // a catch error function to return a 500 error if we enter the wrong id
+        // a catch error function to return a 500 error if the id is not found
         .catch((err) => res.status(500).json(err))
 })
 
