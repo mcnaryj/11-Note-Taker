@@ -7,7 +7,8 @@ const util = require('util');
 const uuid = require('./helpers/uuid');
 const db = require('./db/db.json');
 
-const PORT = 3001;
+// setting the environment variable
+const PORT = process.env.PORT || 3001;
 
 const app = express();
 
@@ -34,19 +35,27 @@ app.listen(PORT, () =>
 
 module.exports = router;
 
-// const readFromFile = util.promisify(fs.readFile);
+const readFromFile = util.promisify(fs.readFile);
 
+// 
 const writeToFile = (destination, content) =>
     fs.writeFile(destination, JSON.stringify(content, null, 4), (err) =>
-        err ? console.error(err) : console.info(`data written to ${destination}`)
+        err ? console.error(err) : console.info(`Written to ${destination}`)
     );
 
 
-// readAndAppend
-// fs.readFile(file, 'utf8', (err, data) => {
-//     if (err) {
-//         console.error(err);
-//     }
+const readAndAppend = (content, file) => {
+    fs.readFile(file, 'utf8', (err, data) => {
+        if (err) {
+            console.error(err);
+        } else {
+            const parsedData = JSON.parse(data);
+            parsedData.push(content);
+            writeToFile(file, parsedData);
+        }
+    });
+};
 
-// }
-// )
+app.get('/api/notes', (req, res) =>
+    readFromFile('.db/db.json').then((data) => res.json(JSON.parse(data)))
+);
