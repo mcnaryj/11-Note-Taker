@@ -1,6 +1,6 @@
 const express = require('express');
-const path = require('path');
 const router = require('express').Router();
+const path = require('path');
 const fs = require('fs');
 const util = require('util');
 
@@ -10,13 +10,13 @@ const db = require('./db/db.json');
 
 // setting the environment variable
 const PORT = process.env.PORT || 3001;
-
 const app = express();
 
 // Middleware for parsing JSON and urlencoded form data
+app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
+
 
 // GET Route for notes page
 app.get('/notes', (req, res) => {
@@ -28,20 +28,14 @@ app.get('/notes', (req, res) => {
 router.get('*', (req, res) => {
     console.log("* route");
     res.sendFile(path.join(__dirname, './public/index.html'));
-});
+})
 
-
-
-
+const readFromFile = util.promisify(fs.readFile);
 
 const writeToFile = (destination, content) =>
     fs.writeFile(destination, JSON.stringify(content, null, 4), (err) =>
         err ? console.error(err) : console.info(`Written to ${destination}`)
     );
-
-const readFromFile = util.promisify(fs.readFile);
-
-
 
 const readAndAppend = (content, file) => {
     fs.readFile(file, 'utf8', (err, data) => {
@@ -56,9 +50,9 @@ const readAndAppend = (content, file) => {
 };
 
 app.get('/api/notes', (req, res) =>
-
     readFromFile('.db/db.json').then((data) => res.json(JSON.parse(data)))
 );
+
 
 app.post('/api/notes', (req, res) => {
     // log the request method
@@ -71,15 +65,13 @@ app.post('/api/notes', (req, res) => {
             title,
             text,
             id: uniqid(),
-        }
+        };
         // then we read and append the new note from the db.json file
         // and the response is res.json(addNote)
         readAndAppend(newNote, './db/db.json');
         res.json(newNote);
     }
 });
-
-module.exports = router;
 
 
 // DELETE /api/notes/:id
@@ -104,3 +96,4 @@ module.exports = router;
 app.listen(PORT, () =>
     console.log(`App listening at http://localhost:${PORT} 🚀`)
 );
+
